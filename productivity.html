@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Productivity — Flow &amp; Scan</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> FLOW &amp; SCAN</div>
+  <nav class="tabs">
+    <a href="index.html">Home</a>
+    <a href="productivity.html" class="active">Productivity</a>
+    <a href="orders.html">Order Flow</a>
+  </nav>
+</header>
+
+<div class="wrap">
+  <h1>Associate Productivity</h1>
+  <p class="lede">
+    Scan activity for a simulated shift (6:00 AM – 2:30 PM). Filter by position or
+    by hour, then click an associate to see their scan gaps visually and in words.
+  </p>
+
+  <div class="controls">
+    <div class="field">
+      <label for="posFilter">Position</label>
+      <select id="posFilter"></select>
+    </div>
+    <div class="field">
+      <label for="periodFilter">Time period</label>
+      <select id="periodFilter">
+        <option value="full">Full shift</option>
+        <option value="6">6:00 – 7:00 AM</option>
+        <option value="7">7:00 – 8:00 AM</option>
+        <option value="8">8:00 – 9:00 AM</option>
+        <option value="9">9:00 – 10:00 AM</option>
+        <option value="10">10:00 – 11:00 AM</option>
+        <option value="11">11:00 AM – 12:00 PM</option>
+        <option value="12">12:00 – 1:00 PM</option>
+        <option value="13">1:00 – 2:00 PM</option>
+      </select>
+    </div>
+    <div class="field">
+      <button class="btn" id="regenBtn">Regenerate shift data</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>Name</th><th>Position</th>
+          <th class="num">Scans (period)</th><th class="num">Rate / hr</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="prodTbody"></tbody>
+    </table>
+  </div>
+
+  <div id="detailPanel"></div>
+
+  <footer class="note">
+    Click any row above to open that associate's scan timeline. Gaps of 15+ minutes
+    are hatched in red and listed with the timestamps and unit IDs on either side.
+  </footer>
+</div>
+
+<script src="app.js"></script>
+<script>initProductivity();</script>
+</body>
+</html>

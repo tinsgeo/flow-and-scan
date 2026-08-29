@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Flow &amp; Scan — Practice Terminal</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> FLOW &amp; SCAN <span class="sub" style="color:var(--muted);font-weight:400;">practice terminal</span></div>
+  <nav class="tabs">
+    <a href="index.html" class="active">Home</a>
+    <a href="productivity.html">Productivity</a>
+    <a href="orders.html">Order Flow</a>
+  </nav>
+</header>
+
+<div class="wrap">
+  <h1>Practice pulling operations data</h1>
+  <p class="lede">
+    This site simulates two kinds of operational data you'll find inside almost any
+    warehouse, fulfillment, or manufacturing environment. Use it to practice the
+    skills from <em>The VBA Portfolio Project</em> — reading what's on screen, then
+    pulling it into Excel with VBA.
+  </p>
+
+  <div class="callout">
+    Nothing here is real operational data. Every number is generated for practice —
+    on the visual dashboards it changes each time you load the page or click
+    "Regenerate," and on the plain data tables it refreshes on a fixed schedule so
+    there's always something new to pull.
+  </div>
+
+  <h2>Two views, two purposes</h2>
+  <div class="panel" style="margin-bottom:14px;">
+    <strong style="font-family:var(--mono); color:var(--amber);">Visual dashboards</strong>
+    <p class="lede" style="margin:6px 0 0;">
+      <a href="productivity.html">Productivity</a> and
+      <a href="orders.html">Order Flow</a> are built to be looked at — filter,
+      click into an associate's scan history, watch the order counters move.
+      This is the "see the problem" half of the skill.
+    </p>
+  </div>
+
+  <h2>Data sources — easy and hard mode</h2>
+  <p class="lede">
+    Real websites usually don't hand you a plain table. Most render their data
+    with JavaScript into <code>&lt;div&gt;</code> elements, which a basic VBA
+    web query can't read at all — it only ever sees the raw HTML a server
+    sends, before any script runs. This site gives you both versions to
+    practice on.
+  </p>
+  <div class="panel" style="margin-bottom:14px;">
+    <strong style="font-family:var(--mono); color:var(--cyan);">Easy mode — plain tables</strong>
+    <p class="lede" style="margin:6px 0 0;">
+      <a href="data/associates.html">/data/associates.html</a> and
+      <a href="data/orders.html">/data/orders.html</a> are plain
+      <code>&lt;table&gt;</code> HTML, no JavaScript. Point Excel's
+      "Data &gt; From Web" or a VBA <code>QueryTables</code> web query straight
+      at these and the data comes right in.
+    </p>
+  </div>
+  <div class="panel">
+    <strong style="font-family:var(--mono); color:var(--flag);">Hard mode — JavaScript-rendered divs</strong>
+    <p class="lede" style="margin:6px 0 0;">
+      <a href="data-hard/associates.html">/data-hard/associates.html</a> and
+      <a href="data-hard/orders.html">/data-hard/orders.html</a> look similar
+      but render entirely with JavaScript into styled <code>&lt;div&gt;</code>
+      rows, and keep refreshing on their own. A plain web query returns an
+      empty shell here — this is where you practice the technique in the book
+      for pulling data out of pages that don't cooperate.
+    </p>
+  </div>
+
+  <h2>Where to start</h2>
+  <p class="lede">
+    If you're working through Chapter 3, start with
+    <a href="data/associates.html">the easy-mode associates table</a> — loop
+    through it, calculate the gap between each scan for a given ID using
+    <code>DateDiff</code>, and flag anything 15 minutes or more, the same as
+    the idle-time tracker. Once that works, try the same exercise against
+    <a href="data-hard/associates.html">hard mode</a> using the technique from
+    later in Chapter 4.
+  </p>
+  <p class="lede">
+    If you're working through Chapter 4, start with
+    <a href="data/orders.html">the easy-mode orders table</a>, then try
+    <a href="data-hard/orders.html">hard mode</a> once you've read the section
+    on pulling data out of JavaScript-rendered pages.
+  </p>
+
+  <footer class="note">
+    Built as a companion practice tool for <em>The VBA Portfolio Project</em>.
+    All data on this site is synthetic and regenerated automatically — it does not
+    represent any real company, facility, or associate.
+  </footer>
+</div>
+</body>
+</html>

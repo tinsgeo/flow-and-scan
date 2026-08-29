@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Associate Scan Feed — Hard Mode (Flow &amp; Scan)</title>
+<style>
+  body { font-family: 'IBM Plex Mono', ui-monospace, monospace; background:#10141c; color:#e9edf5; margin:0; padding:24px 20px 60px; }
+  h1 { font-size:20px; margin-bottom:4px; }
+  p.lede { color:#8891a6; font-size:13px; max-width:70ch; }
+  a { color:#4fd6e8; }
+  .badge { display:inline-block; font-size:11px; padding:2px 8px; border-radius:3px; border:1px solid #ff5d5d; color:#ff5d5d; background:rgba(255,93,93,0.08); margin-bottom:14px; }
+  #feed { margin-top:16px; }
+  /* Intentionally generic, non-semantic wrapper classes -- this mimics how a
+     real front-end framework's build output looks: div soup, not <table>. */
+  .r-9f2 { display:flex; gap:0; border-bottom:1px solid #2a3242; padding:7px 0; font-size:13px; }
+  .c-1a { width:70px; }
+  .c-2b { width:170px; }
+  .c-3c { width:90px; }
+  .c-4d { width:110px; }
+  .c-5e { flex:1; }
+  .hdr { color:#8891a6; text-transform:uppercase; font-size:11px; letter-spacing:0.04em; }
+</style>
+</head>
+<body>
+<h1>Associate Scan Feed</h1>
+<p class="lede">
+  This page renders its data with JavaScript, the way most real internal
+  tools do. View source and you'll find no table, no rows — just an empty
+  <code>&lt;div id="feed"&gt;</code> until the script below runs. The feed
+  also refreshes every few seconds, same as a live operational screen would.
+  Back to <a href="../index.html">Flow &amp; Scan home</a>.
+</p>
+<div class="badge">Requires JavaScript to render — a plain web query will not see this data</div>
+
+<div id="feed">
+  <div class="r-9f2 hdr">
+    <div class="c-1a">ID</div><div class="c-2b">Name</div><div class="c-3c">Position</div>
+    <div class="c-4d">Scan Time</div><div class="c-5e">Unit Scanned</div>
+  </div>
+  <!-- rows injected here by script -->
+</div>
+
+<script>
+  const POSITIONS = ["Pick", "Pack", "Sort", "Induct", "Stow"];
+  const FIRST_NAMES = ["Jordan","Casey","Morgan","Taylor","Riley","Avery","Devon","Reese",
+    "Sydney","Cameron","Peyton","Quinn","Rowan","Emerson","Harper","Elliot"];
+  const LAST_NAMES = ["Bell","Reyes","Whitfield","Nakamura","Alvarez","Sutton","Okafor",
+    "Petrov","Lindgren","Marsh","Delgado","Osei","Kowalski","Fontaine"];
+
+  function pad(n){ return n.toString().padStart(2,"0"); }
+  function fmtTime(mins){
+    let h = Math.floor(mins/60), m = Math.floor(mins%60);
+    const ampm = h>=12 ? "PM":"AM"; let h12 = h%12; if(h12===0) h12=12;
+    return `${h12}:${pad(m)} ${ampm}`;
+  }
+
+  function buildFeed() {
+    const feed = document.getElementById("feed");
+    // clear all but the header row
+    feed.querySelectorAll(".r-9f2:not(.hdr)").forEach(el => el.remove());
+
+    const shiftStart = 6*60, shiftEnd = 14.5*60;
+    const rows = [];
+    for (let i = 0; i < 16; i++) {
+      const id = 1000 + i;
+      const name = `${FIRST_NAMES[Math.floor(Math.random()*FIRST_NAMES.length)]} ${LAST_NAMES[Math.floor(Math.random()*LAST_NAMES.length)]}`;
+      const position = POSITIONS[Math.floor(Math.random()*POSITIONS.length)];
+      let t = shiftStart + Math.floor(Math.random()*10);
+      while (t < shiftEnd) {
+        let interval = 2 + Math.floor(Math.random()*7);
+        if (Math.random() < 0.12) interval = 18 + Math.floor(Math.random()*27);
+        t += interval;
+        if (t >= shiftEnd) break;
+        rows.push({ id, name, position, time: fmtTime(t), unit: `SKU-${10000+Math.floor(Math.random()*89999)}` });
+      }
+    }
+    rows.sort((a,b) => a.id - b.id || a.time.localeCompare(b.time));
+
+    const frag = document.createDocumentFragment();
+    rows.forEach(r => {
+      const row = document.createElement("div");
+      row.className = "r-9f2";
+      row.setAttribute("data-assoc-id", r.id);
+      row.setAttribute("data-position", r.position);
+      row.setAttribute("data-scan-time", r.time);
+      row.setAttribute("data-unit", r.unit);
+      row.innerHTML = `
+        <div class="c-1a">${r.id}</div>
+        <div class="c-2b">${r.name}</div>
+        <div class="c-3c">${r.position}</div>
+        <div class="c-4d">${r.time}</div>
+        <div class="c-5e">${r.unit}</div>
+      `;
+      frag.appendChild(row);
+    });
+    feed.appendChild(frag);
+  }
+
+  buildFeed();
+  setInterval(buildFeed, 8000); // re-render like a live screen would
+</script>
+</body>
+</html>

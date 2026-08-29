@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Order Flow Feed — Hard Mode (Flow &amp; Scan)</title>
+<style>
+  body { font-family: 'IBM Plex Mono', ui-monospace, monospace; background:#10141c; color:#e9edf5; margin:0; padding:24px 20px 60px; }
+  h1 { font-size:20px; margin-bottom:4px; }
+  p.lede { color:#8891a6; font-size:13px; max-width:70ch; }
+  a { color:#4fd6e8; }
+  .badge { display:inline-block; font-size:11px; padding:2px 8px; border-radius:3px; border:1px solid #ff5d5d; color:#ff5d5d; background:rgba(255,93,93,0.08); margin-bottom:14px; }
+  .r-7k1 { display:flex; gap:0; border-bottom:1px solid #2a3242; padding:7px 0; font-size:13px; }
+  .k-a { width:130px; }
+  .k-b { width:110px; }
+  .k-c { width:110px; }
+  .k-d { width:110px; }
+  .k-e { flex:1; }
+  .hdr { color:#8891a6; text-transform:uppercase; font-size:11px; letter-spacing:0.04em; }
+</style>
+</head>
+<body>
+<h1>Order Flow Feed</h1>
+<p class="lede">
+  Same idea as the associate feed — this data is written into
+  <code>&lt;div&gt;</code> elements by JavaScript, not a table, and the log
+  grows every few seconds like a real live system. Back to
+  <a href="../index.html">Flow &amp; Scan home</a>.
+</p>
+<div class="badge">Requires JavaScript to render — a plain web query will not see this data</div>
+
+<div id="log">
+  <div class="r-7k1 hdr">
+    <div class="k-a">Timestamp (UTC)</div><div class="k-b">Pending</div>
+    <div class="k-c">Created</div><div class="k-d">In Progress</div><div class="k-e">Completed</div>
+  </div>
+</div>
+
+<script>
+  let pending = 40, created = 0, inProgress = 6, completed = 0;
+  const log = document.getElementById("log");
+
+  function tick() {
+    const newOrders = Math.floor(Math.random()*5);
+    created += newOrders; pending += newOrders;
+
+    const started = Math.min(pending, Math.floor(Math.random()*4));
+    pending -= started; inProgress += started;
+
+    const finished = Math.min(inProgress, Math.floor(Math.random()*4));
+    inProgress -= finished; completed += finished;
+
+    const row = document.createElement("div");
+    row.className = "r-7k1";
+    row.setAttribute("data-pending", pending);
+    row.setAttribute("data-created", created);
+    row.setAttribute("data-in-progress", inProgress);
+    row.setAttribute("data-completed", completed);
+    const ts = new Date().toISOString().slice(11,19);
+    row.innerHTML = `
+      <div class="k-a">${ts}</div>
+      <div class="k-b">${pending}</div>
+      <div class="k-c">${created}</div>
+      <div class="k-d">${inProgress}</div>
+      <div class="k-e">${completed}</div>
+    `;
+    log.appendChild(row);
+
+    // keep the feed from growing forever
+    const rows = log.querySelectorAll(".r-7k1:not(.hdr)");
+    if (rows.length > 25) rows[0].remove();
+  }
+
+  tick();
+  setInterval(tick, 3000);
+</script>
+</body>
+</html>

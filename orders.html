@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Order Flow — Flow &amp; Scan</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> FLOW &amp; SCAN</div>
+  <nav class="tabs">
+    <a href="index.html">Home</a>
+    <a href="productivity.html">Productivity</a>
+    <a href="orders.html" class="active">Order Flow</a>
+  </nav>
+</header>
+
+<div class="wrap">
+  <h1>Order Flow</h1>
+  <p class="lede">
+    A simulated view of work moving through a building — orders pending, created,
+    in progress, and completed. Updates every couple of seconds, the same shape of
+    data a real flow dashboard tracks.
+  </p>
+
+  <div class="grid-metrics">
+    <div class="metric pending"><div class="sweep"></div><div class="label">Orders Pending</div><div class="value" id="mPending">0</div></div>
+    <div class="metric created"><div class="sweep"></div><div class="label">Orders Created</div><div class="value" id="mCreated">0</div></div>
+    <div class="metric progress"><div class="sweep"></div><div class="label">In Progress</div><div class="value" id="mProgress">0</div></div>
+    <div class="metric completed"><div class="sweep"></div><div class="label">Completed</div><div class="value" id="mCompleted">0</div></div>
+  </div>
+
+  <h2>Recent snapshots</h2>
+  <div class="panel">
+    <table>
+      <thead>
+        <tr><th>Time</th><th class="num">Pending</th><th class="num">Created</th><th class="num">In Progress</th><th class="num">Completed</th></tr>
+      </thead>
+      <tbody id="orderTbody"></tbody>
+    </table>
+  </div>
+
+  <footer class="note">
+    This view is for watching the flow in real time. To practice pulling this kind
+    of data into Excel, use <a href="data/orders.html">/data/orders.html</a> instead —
+    a plain table snapshot that refreshes on a fixed schedule.
+  </footer>
+</div>
+
+<script src="app.js"></script>
+<script>initOrders();</script>
+</body>
+</html>
